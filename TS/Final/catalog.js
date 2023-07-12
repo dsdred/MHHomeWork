@@ -9,8 +9,9 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     return to.concat(ar || Array.prototype.slice.call(from));
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Catalog = exports.BookFilter = exports.Book = exports.Genre = void 0;
+exports.BookReview = exports.Catalog = exports.BookFilter = exports.Book = exports.Genre = void 0;
 var users_1 = require("./users");
+var generalmethods_1 = require("./generalmethods");
 // Жанры книг
 var Genre;
 (function (Genre) {
@@ -33,15 +34,25 @@ var Book = /** @class */ (function () {
         this.genre = __spreadArray([], genre, true);
         this.year = year;
         this.setActive(active);
+        this.review = [];
     }
     Book.prototype.setActive = function (active) {
         this.active = active;
+    };
+    Book.prototype.librarianSetActive = function (currentUser, active) {
+        if (currentUser.getActive() && currentUser.role.indexOf(users_1.Role.librarian) >= 0) {
+            this.active = active;
+        }
     };
     Book.prototype.getId = function () {
         return this.id;
     };
     Book.prototype.getActive = function () {
         return this.active;
+    };
+    // добавить книги в список "Избранное".
+    Book.prototype.postReview = function (review) {
+        this.review.push(review);
     };
     return Book;
 }());
@@ -52,11 +63,45 @@ var BookFilter = /** @class */ (function () {
     return BookFilter;
 }());
 exports.BookFilter = BookFilter;
+var BookReview = /** @class */ (function () {
+    function BookReview() {
+    }
+    return BookReview;
+}());
+exports.BookReview = BookReview;
 var Catalog = /** @class */ (function () {
     function Catalog() {
         this.finalId = 0;
         this.books = [];
     }
+    // получаем книгу
+    Catalog.prototype.getBookByID = function (id) {
+        var findBooks = this.books.filter(function (item, index, arr) {
+            return item.id === id;
+        });
+        var findBook = (findBooks.length > 0) ? findBooks[0] :
+            new Book(this.finalId += 1, "name", "author", [], 1000, false);
+        if (typeof findBook === "undefined") {
+            console.log('Книга отсутствует.');
+            return new Book(this.finalId += 1, "name", "author", [], 1001, false);
+        }
+        else {
+            return findBook;
+        }
+    };
+    // получить список книг на основании фильтра.
+    Catalog.prototype.getBooks = function (option) {
+        var findBooks = __spreadArray([], this.books, true);
+        var _loop_1 = function (key) {
+            findBooks = findBooks.filter(function (item, index, arr) {
+                return (0, generalmethods_1.compareBooksValue)(item, option, key);
+            });
+        };
+        for (var key in option) {
+            _loop_1(key);
+        }
+        return findBooks;
+    };
     // создаем книгу
     Catalog.prototype.postBook = function (currentUser, option) {
         var arrErr = [];
@@ -88,7 +133,43 @@ var Catalog = /** @class */ (function () {
         else {
             console.log('Заполните name, author и year.');
         }
-        console.log("книга добавлена");
+    };
+    // ставим пометку, что книга не активена
+    Catalog.prototype.deleteBook = function (currentUser, changeBook) {
+        if (currentUser.getActive() && currentUser.role.indexOf(users_1.Role.librarian) >= 0) {
+            changeBook.librarianSetActive(currentUser, false);
+        }
+        else {
+            console.log('Обратитесь к библиотекарю.');
+        }
+    };
+    // Редактирование пользователей
+    Catalog.prototype.putBook = function (currentUser, changeBook, option) {
+        if (currentUser.getActive() && currentUser.role.indexOf(users_1.Role.librarian) >= 0) {
+            for (var key in option) {
+                if (key != "id") {
+                    if (key === "genre") {
+                        if (typeof option.genre === "undefined") {
+                            option.genre = [];
+                        }
+                        else {
+                            changeBook.genre = __spreadArray([], option.genre, true);
+                        }
+                    }
+                    else if (key === "active") {
+                        if (typeof option.active === 'boolean') {
+                            changeBook.librarianSetActive(currentUser, option.active);
+                        }
+                    }
+                    else {
+                        changeBook[key] = option[key];
+                    }
+                }
+            }
+        }
+        else {
+            console.log('Обратитесь к библиотекарю.');
+        }
     };
     return Catalog;
 }());

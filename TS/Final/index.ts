@@ -1,12 +1,6 @@
 import * as mock from "./mockobject";
 import { Library, User, UserFilter, Role } from "./users";
-import { Catalog, Book, BookFilter, Genre  } from "./catalog";
-
-
-
-
-
-
+import { Catalog, Book, BookFilter, Genre, BookReview  } from "./catalog";
 
 
 //////////////////////////////////////////////////////////////
@@ -68,16 +62,73 @@ myLibrary.putUser(godUser, findUser2, options)
 // Работа с книгами
 
 const myCatalog = new Catalog()
-let newBook     = new BookFilter
-newBook.name    = "Цель"
-newBook.author  = "Элияху Голдратт"
-newBook.genre   = [Genre.fantasy]
-newBook.year    = 2014
+mock.addBooks(myCatalog,findUser2)
 
-myCatalog.postBook(findUser2, newBook)
-console.log(myCatalog);
+// console.log(myCatalog);
 
 
-// myCatalog.post(newBook)
-// myCatalog.post(newBook)
-// myCatalog.post(newBook)
+// Получаем пользователей по Id
+const findBook1 = myCatalog.getBookByID(1) //"Цель","Элияху Голдратт", [Genre.business, Genre.theory], 2014, true
+// console.log(findBook1);
+const findBook2 = myCatalog.getBookByID(100) // "Mickey Blue Eyes", "Gusty", [Genre.theory, Genre.novel], year:1992, false
+// console.log(findBook2);
+const findBook3 = myCatalog.getBookByID(3) //"Wedding Trough (Vase de noces)", "Avis", [Genre.poems, Genre.comedy], 1999, false}
+// console.log(findBook3);
+
+
+myCatalog.deleteBook(godUser, findBook2) // админ удаляет книгу
+console.log(findBook2);
+
+myCatalog.deleteBook(findUser2, findBook2) // библиотекарь пытается удалить админа
+console.log(findBook2);
+
+// работаем с поиском
+let optionbook     = new BookFilter
+// optionbook.name    = "Цель"
+// optionbook.author  = "Элияху Голдратт"
+// optionbook.genre   = [Genre.business]
+// optionbook.genre   = [Genre.poems, Genre.comedy]
+// optionbook.year    = 2014
+// optionbook.year    = 2007
+// optionbook.active  = true;
+// console.log(myCatalog.getBooks(optionbook));
+
+// работаем с изменением
+let optionbook1     = new BookFilter
+optionbook1.name    = "Цель"
+optionbook1.author  = "Элияху Голдратт"
+// optionbook1.genre   = [Genre.business]
+optionbook1.genre   = [Genre.poems, Genre.comedy]
+// optionbook1.year    = 2014
+optionbook1.year    = 2007
+optionbook1.active  = true;
+
+// myCatalog.putBook(godUser, findBook2, optionbook1)
+myCatalog.putBook(findUser2, findBook2, optionbook1)
+console.log(findBook2);
+
+
+// Добавить книгу в избранное
+godUser.postFavorites(13)
+godUser.postFavorites(133)
+godUser.postFavorites(33)
+console.log(godUser);
+
+godUser.deleteFavorites(133)
+console.log(godUser);
+
+//отзыв и оценка
+let review1 = new BookReview
+review1.userid   = 1
+review1.review   ='Отзыв положительный'
+review1.grade    = 9
+
+findBook2.postReview(review1)
+console.log(findBook2);
+
+let review2 = new BookReview
+review2.userid   = 13
+review2.review   ='ниче непонял'
+review2.grade    = 5
+findBook2.postReview(review2)
+console.log(findBook2);

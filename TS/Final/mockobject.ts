@@ -1,4 +1,5 @@
 import { Library, User, Role, UserFilter } from "./users";
+import { Catalog, Book, BookFilter, Genre  } from "./catalog";
 
 function addUsers (myLibrary: Library, godUser: User) {
 // https://www.mockaroo.com/ - generate mockdata
@@ -127,6 +128,137 @@ function addUsers (myLibrary: Library, godUser: User) {
         myLibrary.postUser(godUser, options) 
     }
 
+
 }
 
-export {addUsers}
+
+function addBooks (myCatalog: Catalog, godUser: User) {
+    // https://www.mockaroo.com/ - generate mockdata
+    const msBooks = 
+    [{name:"Star!",                             author:"Boris",     genre:[Genre.fantasy, Genre.history],                           year:1993,active:true},
+    {name:"Wedding Trough (Vase de noces)",     author:"Avis",      genre:[Genre.poems, Genre.comedy],                              year:1999,active:false},
+    {name:"Marine Story, A",                    author:"Felipa",    genre:[Genre.poems, Genre.comedy, Genre.history, Genre.fantasy],year:2007,active:true},
+    {name:"Escape Me Never",                    author:"Carmelina", genre:[Genre.business],                                         year:2008,active:false},
+    {name:"Secret Agent",                       author:"Lars",      genre:[Genre.thriller],                                         year:2007,active:true},
+    {name:"Wicked City (Yôjû toshi)",           author:"Upton",     genre:[Genre.poems, Genre.comedy, Genre.history, Genre.fantasy],year:1991,active:true},
+    {name:"Pick-up Summer (Pinball Summer)",    author:"Evelyn",    genre:[Genre.poems, Genre.comedy, Genre.history, Genre.fantasy],year:2005,active:true},
+    {name:"Last Wave, The",                     author:"Loren",     genre:[Genre.poems, Genre.comedy, Genre.history, Genre.fantasy],year:1995,active:true},
+    {name:"Tombs of the Blind Dead",            author:"Kerstin",   genre:[Genre.fantasy, Genre.history],                           year:2005,active:false},
+    {name:"Riptide",                            author:"Alida",     genre:[Genre.poems, Genre.comedy, Genre.history, Genre.fantasy],year:2009,active:true},
+    {name:"Twilight",                           author:"Alex",      genre:[Genre.business, Genre.psychology],                       year:1993,active:false},
+    {name:"Assassination of a High School",     author:"Alvy",      genre:[Genre.poems, Genre.comedy],                              year:1992,active:true},
+    {name:"*batteries not included",            author:"Isak",      genre:[Genre.business, Genre.psychology],                       year:2003,active:false},
+    {name:"Rebirth",                            author:"Franny",    genre:[Genre.poems, Genre.comedy, Genre.history, Genre.fantasy],year:2008,active:false},
+    {name:"Monkey in Winter",                   author:"Thorpe",    genre:[Genre.business],                                         year:2008,active:true},
+    {name:"Holiday Affair",                     author:"Hamish",    genre:[Genre.business],                                         year:1999,active:true},
+    {name:"WALL·E",                             author:"Skippie",   genre:[Genre.theory, Genre.novel],                              year:1998,active:false},
+    {name:"Visit, The",                         author:"Thorpe",    genre:[Genre.poems, Genre.comedy],                              year:2002,active:false},
+    {name:"Finger, The (Dedo, El)",             author:"Pearle",    genre:[Genre.business, Genre.psychology],                       year:1986,active:true},
+    {name:"Pursuit of Happyness, The",          author:"Chelsey",   genre:[Genre.theory, Genre.novel],                              year:2009,active:false},
+    {name:"Let My Puppets Come",                author:"Meridith",  genre:[Genre.poems, Genre.comedy],                              year:1995,active:false},
+    {name:"Way... Way Out",                     author:"Gilbertina",genre:[Genre.fantasy, Genre.history],                           year:2005,active:false},
+    {name:"Brothers at War",                    author:"Alta",      genre:[Genre.fantasy, Genre.history],                           year:2011,active:false},
+    {name:"Brother (Brat)",                     author:"Norton",    genre:[Genre.business, Genre.psychology],                       year:1997,active:true},
+    {name:"Adam & Steve",                       author:"Hana",      genre:[Genre.thriller],                                         year:2011,active:false},
+    {name:"Rosemary's Baby",                    author:"Kassandra", genre:[Genre.poems, Genre.comedy, Genre.history, Genre.fantasy],year:1996,active:true},
+    {name:"When Darkness Falls",                author:"Jon",       genre:[Genre.theory, Genre.novel],                              year:1994,active:true},
+    {name:"King of Kings, The",                 author:"Cherlyn",   genre:[Genre.fantasy, Genre.history],                           year:2007,active:true},
+    {name:"American Pop",                       author:"Dorelia",   genre:[Genre.fantasy, Genre.history],                           year:1972,active:true},
+    {name:"Chinoise, La",                       author:"Clevey",    genre:[Genre.thriller],                                         year:1991,active:false},
+    {name:"Hotte in Paradise",                  author:"Orran",     genre:[Genre.fantasy, Genre.history],                           year:2010,active:true},
+    {name:"Monsieur Lazhar",                    author:"Sharia",    genre:[Genre.poems, Genre.comedy, Genre.history, Genre.fantasy],year:2011,active:true},
+    {name:"Little Secrets",                     author:"Letisha",   genre:[Genre.theory, Genre.novel],                              year:1997,active:false},
+    {name:"Stag Night",                         author:"Daisey",    genre:[Genre.fantasy, Genre.history],                           year:1986,active:false},
+    {name:"Point Men, The",                     author:"Toni",      genre:[Genre.fantasy, Genre.history],                           year:2006,active:true},
+    {name:"Cape Fear",                          author:"Tersina",   genre:[Genre.business],                                         year:2006,active:true},
+    {name:"Victor/Victoria",                    author:"Sullivan",  genre:[Genre.thriller],                                         year:2010,active:true},
+    {name:"Lionheart",                          author:"Greer",     genre:[Genre.fantasy, Genre.history],                           year:1995,active:true},
+    {name:"They Wait",                          author:"Devondra",  genre:[Genre.business],                                         year:1996,active:false},
+    {name:"Vito",                               author:"Tamera",    genre:[Genre.business, Genre.psychology],                       year:1988,active:false},
+    {name:"Up Periscope",                       author:"Allx",      genre:[Genre.business],                                         year:1988,active:false},
+    {name:"Crucified Lovers",                   author:"Lacee",     genre:[Genre.business, Genre.psychology],                       year:1969,active:false},
+    {name:"Aks",                                author:"Christean", genre:[Genre.theory, Genre.novel],                              year:2006,active:false},
+    {name:"The Blood of Fu Manchu",             author:"Arin",      genre:[Genre.theory, Genre.novel],                              year:1996,active:false},
+    {name:"Cold in July",                       author:"Nate",      genre:[Genre.theory, Genre.novel],                              year:1998,active:true},
+    {name:"Flying Machines",                    author:"Gardiner",  genre:[Genre.poems, Genre.comedy],                              year:2010,active:false},
+    {name:"Call Me Madam",                      author:"Taite",     genre:[Genre.poems, Genre.comedy],                              year:1997,active:true},
+    {name:"3 dev adam (Three Giant Men) ",      author:"Brit",      genre:[Genre.business, Genre.psychology],                       year:2012,active:true},
+    {name:"Adonis Factor, The",                 author:"Parrnell",  genre:[Genre.business],                                         year:1989,active:false},
+    {name:"Horrible Bosses",                    author:"Elsa",      genre:[Genre.business],                                         year:1988,active:true},
+    {name:"Screamers",                          author:"Georgetta", genre:[Genre.fantasy, Genre.history],                           year:1961,active:true},
+    {name:"Once My Mother",                     author:"Melisande", genre:[Genre.business],                                         year:2008,active:true},
+    {name:"Bridge to Terabithia",               author:"Olav",      genre:[Genre.business, Genre.psychology],                       year:2007,active:true},
+    {name:"Birdcage Inn (Paran daemun)",        author:"Irina",     genre:[Genre.theory, Genre.novel],                              year:2003,active:false},
+    {name:"Bad Johnson",                        author:"Orella",    genre:[Genre.theory, Genre.novel],                              year:2009,active:true},
+    {name:"See You in the Morning",             author:"Lindy",     genre:[Genre.theory, Genre.novel],                              year:2001,active:true},
+    {name:"Werner - Gekotzt wird später",       author:"Andrej",    genre:[Genre.poems, Genre.comedy, Genre.history, Genre.fantasy],year:2011,active:true},
+    {name:"Caesar Must Die",                    author:"Skipper",   genre:[Genre.poems, Genre.comedy, Genre.history, Genre.fantasy],year:1987,active:true},
+    {name:"Whatever Happened to Harold Smith?", author:"Jarrid",    genre:[Genre.theory, Genre.novel],                              year:2009,active:true},
+    {name:"Conformist, The (Conformista, Il)",  author:"Aleksandr", genre:[Genre.theory, Genre.novel],                              year:2009,active:false},
+    {name:"Stiff Upper Lips",                   author:"Athena",    genre:[Genre.business],                                         year:2007,active:true},
+    {name:"Wolfman, The",                       author:"Mollee",    genre:[Genre.fantasy, Genre.history],                           year:1995,active:false},
+    {name:"The New Centurions",                 author:"Donielle",  genre:[Genre.business],                                         year:2000,active:true},
+    {name:"Future by Design",                   author:"Vince",     genre:[Genre.business, Genre.psychology],                       year:1999,active:false},
+    {name:"Terminal USA",                       author:"Alane",     genre:[Genre.fantasy, Genre.history],                           year:2006,active:true},
+    {name:"These Amazing Shadows",              author:"Rainer",    genre:[Genre.poems, Genre.comedy, Genre.history, Genre.fantasy],year:1987,active:false},
+    {name:"Fallen Idol, The",                   author:"Palm",      genre:[Genre.fantasy, Genre.history],                           year:2012,active:false},
+    {name:"Tempest, The",                       author:"Orv",       genre:[Genre.business, Genre.psychology],                       year:1972,active:false},
+    {name:"Inside Paris (Dans Paris)",          author:"Marlin",    genre:[Genre.business],                                         year:1992,active:false},
+    {name:"Dragon Age: Redemption",             author:"Curtice",   genre:[Genre.business],                                         year:2004,active:true},
+    {name:"Juche Idea, The",                    author:"Truman",    genre:[Genre.poems, Genre.comedy, Genre.history, Genre.fantasy],year:2008,active:false},
+    {name:"Here Comes the Devil",               author:"Pavel",     genre:[Genre.poems, Genre.comedy, Genre.history, Genre.fantasy],year:2003,active:true},
+    {name:"Branch Reflecting on Existence",     author:"Raynor",    genre:[Genre.thriller],                                         year:2011,active:false},
+    {name:"Slasher",                            author:"Issiah",    genre:[Genre.business],                                         year:2001,active:true},
+    {name:"Goya's Ghosts",                      author:"Goddart",   genre:[Genre.fantasy, Genre.history],                           year:1985,active:true},
+    {name:"General Died at Dawn, The",          author:"Mignonne",  genre:[Genre.poems, Genre.comedy],                              year:2005,active:true},
+    {name:"Love in Another Language",           author:"Kathe",     genre:[Genre.business],                                         year:1987,active:false},
+    {name:"Island of Dr. Moreau, The",          author:"Flemming",  genre:[Genre.fantasy, Genre.history],                           year:1994,active:false},
+    {name:"My Weakness Is Strong",              author:"Benni",     genre:[Genre.business, Genre.psychology],                       year:2004,active:false},
+    {name:"Les Feux Arctiques (Arktiset tulet)",author:"Dillie",    genre:[Genre.business, Genre.psychology],                       year:1984,active:false},
+    {name:"X-Men: Days of Future Past",         author:"Laurens",   genre:[Genre.theory, Genre.novel],                              year:2006,active:true},
+    {name:"Evita",                              author:"Roth",      genre:[Genre.poems, Genre.comedy],                              year:1986,active:false},
+    {name:"Suzanne's Diary for Nicholas",       author:"Constantin",genre:[Genre.poems, Genre.comedy],                              year:2007,active:true},
+    {name:"Dragon Ball Z: Wrath of the Dragon", author:"Nissie",    genre:[],                                                       year:2007,active:true},
+    {name:"Man Who Sleeps",                     author:"Arlena",    genre:[Genre.business, Genre.psychology],                       year:2010,active:true},
+    {name:"Felidae",                            author:"Shawnee",   genre:[Genre.theory, Genre.novel],                              year:1963,active:false},
+    {name:"Five-Year Engagement, The",          author:"Katey",     genre:[Genre.fantasy, Genre.history],                           year:2001,active:false},
+    {name:"42 Up",                              author:"Desmond",   genre:[Genre.fantasy, Genre.history],                           year:2006,active:true},
+    {name:"Legacy of a Hollywood Renegade",     author:"Chauncey",  genre:[],                                                       year:1998,active:true},
+    {name:"A Film About the Pixies",            author:"Collen",    genre:[Genre.fantasy, Genre.history],                           year:1995,active:true},
+    {name:"Under Ten Flags",                    author:"Oneida",    genre:[Genre.poems, Genre.comedy, Genre.history, Genre.fantasy],year:1995,active:false},
+    {name:"Love Story",                         author:"Sibyl",     genre:[Genre.fantasy, Genre.history],                           year:2009,active:true},
+    {name:"The War at Home",                    author:"Wendye",    genre:[Genre.poems, Genre.comedy, Genre.history, Genre.fantasy],year:2011,active:true},
+    {name:"Supernova",                          author:"Martie",    genre:[Genre.business, Genre.psychology],                       year:2008,active:false},
+    {name:"Chromophobia",                       author:"Ravid",     genre:[Genre.poems, Genre.comedy],                              year:1996,active:true},
+    {name:"Mr. Untouchable",                    author:"Joleen",    genre:[Genre.theory, Genre.novel],                              year:1991,active:true},
+    {name:"Who Killed Bambi?",                  author:"Elly",      genre:[Genre.fantasy, Genre.history],                           year:1998,active:false},
+    {name:"Make Like a Thief",                  author:"Orville",   genre:[Genre.business],                                         year:1994,active:true},
+    {name:"Mickey Blue Eyes",                   author:"Gusty",     genre:[Genre.theory, Genre.novel],                              year:1992,active:true},
+    {name:"Carpool",                            author:"Filbert",   genre:[Genre.business, Genre.psychology],                       year:1992,active:true}]
+
+    // [0] Дань уважения первой книге из бизнес-литературы, которую прочитал
+    let newBook     = new BookFilter
+    newBook.name    = "Цель"
+    newBook.author  = "Элияху Голдратт"
+    newBook.genre   = [Genre.business, Genre.theory]
+    newBook.year    = 2014
+    newBook.active  = true;
+    myCatalog.postBook(godUser, newBook)
+
+    // [1]-[x]
+    let item: any // для обхода mock данных с последующим созданием пользователей
+    for (item of msBooks){
+        let options        = new BookFilter
+        options.name       = item.name;
+        options.author     = item.author;
+        options.genre      = item.genre;
+        options.year       = item.year;
+        options.active     = item.active;
+
+        myCatalog.postBook(godUser, options) 
+    }
+
+}
+
+
+export {addUsers, addBooks}

@@ -5,15 +5,15 @@ enum Role {
     admin       = "Administrator",
     reader      = "Reader",
     librarian   = "Librarian",
-}
+};
 
 class User {
     readonly id:        number
-    name:              string
-    email:             string
-    role:     Role[]
-    readonly favorites:number[]
-    private active:    boolean
+    name:               string
+    email:              string
+    role:               Role[]
+    readonly favorites: number[]
+    private active:     boolean
 
     constructor(id: number, name: string, email: string, role: Role[] | undefined, active: boolean){
         this.name   = name
@@ -48,13 +48,14 @@ class User {
         return this.active
     }
 
-
-    postFavorites (book:Book) {
-        // this.favorites.push(book.getID())
+    // добавить книги в список "Избранное".
+    postFavorites (id:number) {
+        this.favorites.push(id)
     }
-    deleteFavorites (book:Book) {
-        // let elIndex = this.favorites.indexOf(book.getID);
-        // if (elIndex >= 0) { delete this.favorites[book.getID()] }
+    // удалить книги из списка "Избранное".
+    deleteFavorites (id:number) {
+        let elIndex = this.favorites.indexOf(id);
+        if (elIndex >= 0) { delete this.favorites[elIndex] }
     }
 }
 
@@ -180,6 +181,7 @@ class Library {
         }
     }
 
+    // Редактирование пользователей
     putUser(currentUser: User, changeUser:User, option: UserFilter){
         if (currentUser.getActive() && currentUser.role.indexOf(Role.admin) >= 0) {
             

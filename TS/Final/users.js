@@ -49,12 +49,16 @@ var User = /** @class */ (function () {
     User.prototype.getActive = function () {
         return this.active;
     };
-    User.prototype.postFavorites = function (book) {
-        // this.favorites.push(book.getID())
+    // добавить книги в список "Избранное".
+    User.prototype.postFavorites = function (id) {
+        this.favorites.push(id);
     };
-    User.prototype.deleteFavorites = function (book) {
-        // let elIndex = this.favorites.indexOf(book.getID);
-        // if (elIndex >= 0) { delete this.favorites[book.getID()] }
+    // удалить книги из списка "Избранное".
+    User.prototype.deleteFavorites = function (id) {
+        var elIndex = this.favorites.indexOf(id);
+        if (elIndex >= 0) {
+            delete this.favorites[elIndex];
+        }
     };
     return User;
 }());
@@ -171,6 +175,7 @@ var Library = /** @class */ (function () {
             console.log('Обратитесь к администратору.');
         }
     };
+    // Редактирование пользователей
     Library.prototype.putUser = function (currentUser, changeUser, option) {
         if (currentUser.getActive() && currentUser.role.indexOf(Role.admin) >= 0) {
             for (var key in option) {
