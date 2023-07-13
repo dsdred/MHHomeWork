@@ -187,7 +187,7 @@
         optionbook.year    = 2007
         console.log(myCatalog.getBooks(optionbook));
 
-#### postBook(currentUser: User, option:BookFilter) - cjplftv rybue ####
+#### postBook(currentUser: User, option:BookFilter) - создаем книгу ####
 ###### Пример: ######
         let newBook     = new BookFilter
         newBook.name    = "Цель"
