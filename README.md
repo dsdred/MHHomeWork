@@ -176,3 +176,36 @@
 * private books:   Book[] (все книги каталога)
 
 ##### Функции: #####
+#### getBookByID(id:number) - получаем книгу по номеру ####
+###### Пример: ######
+        const findBook = myCatalog.getBookByID(1)
+
+#### getBooks(option: BookFilter) - получить список книг на основании фильтра. ####
+###### Пример: выводим все комедии и поэмы выпущенные в 2007 году. ######
+        let optionbook     = new BookFilter
+        optionbook.genre   = [Genre.poems, Genre.comedy]
+        optionbook.year    = 2007
+        console.log(myCatalog.getBooks(optionbook));
+
+#### postBook(currentUser: User, option:BookFilter) - cjplftv rybue ####
+###### Пример: ######
+        let newBook     = new BookFilter
+        newBook.name    = "Цель"
+        newBook.author  = "Элияху Голдратт"
+        newBook.genre   = [Genre.business, Genre.theory]
+        newBook.year    = 2014
+        newBook.active  = true;
+        myCatalog.postBook(godUser, newBook)
+
+#### deleteBook(currentUser: User, changeBook:Book) - ставим пометку, что книга не активена/удалена ####
+###### Пример: ######
+        const myCatalog = new Catalog()
+        myCatalog.deleteBook(User, Book) 
+
+#### putBook(currentUser: User, changeBook:Book, option: BookFilter) - редактируем книгу ####
+###### Пример: изменяем автора, жанр и дату издания ######
+        let optionbook     = new BookFilter
+        optionbook1.author  = "Элияху Голдратт"
+        optionbook1.genre   = [Genre.business]
+        optionbook1.year    = 2014
+        myCatalog.putBook(godUser, Book, optionbook)

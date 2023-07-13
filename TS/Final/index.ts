@@ -67,7 +67,7 @@ mock.addBooks(myCatalog,findUser2)
 // console.log(myCatalog);
 
 
-// Получаем пользователей по Id
+// Получаем книги по Id
 const findBook1 = myCatalog.getBookByID(1) //"Цель","Элияху Голдратт", [Genre.business, Genre.theory], 2014, true
 // console.log(findBook1);
 const findBook2 = myCatalog.getBookByID(100) // "Mickey Blue Eyes", "Gusty", [Genre.theory, Genre.novel], year:1992, false
@@ -76,10 +76,10 @@ const findBook3 = myCatalog.getBookByID(3) //"Wedding Trough (Vase de noces)", "
 // console.log(findBook3);
 
 
-myCatalog.deleteBook(godUser, findBook2) // админ удаляет книгу
+myCatalog.deleteBook(godUser, findBook2) // админ пытается удалить книгу
 console.log(findBook2);
 
-myCatalog.deleteBook(findUser2, findBook2) // библиотекарь пытается удалить админа
+myCatalog.deleteBook(findUser2, findBook2) // библиотекарь пытается удалить книгу
 console.log(findBook2);
 
 // работаем с поиском

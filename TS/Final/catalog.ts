@@ -147,7 +147,7 @@ class Catalog {
         }
     }
 
-    // Редактирование пользователей
+    // Редактирование книги
     putBook(currentUser: User, changeBook:Book, option: BookFilter){
         if (currentUser.getActive() && currentUser.role.indexOf(Role.librarian) >= 0) {
                 
