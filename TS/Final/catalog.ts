@@ -48,7 +48,7 @@ class Book {
         return this.active
     }
 
-    // добавить книги в список "Избранное".
+    // добавить отзыв на книгу.
     postReview (review:BookReview) {
         this.review.push(review)
     }

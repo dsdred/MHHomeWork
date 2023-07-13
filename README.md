@@ -29,8 +29,14 @@ function addBooks (myCatalog: Catalog, godUser: User) -
 * Добавляется каталог
 * Добавляется 101 книга
 ###### Пример для файла index.ts: ######
+        import * as mock from "./mockobject";
+        import { Library, User, UserFilter, Role } from "./users";
+        import { Catalog, Book, BookFilter, Genre, BookReview  } from "./catalog";
+
         const myCatalog = new Catalog()
-        mock.addBooks(myCatalog, User) // User- пользователь с ролью [Role.librarian]
+        mock.addBooks(myCatalog, User) // User - пользователь с ролью [Role.librarian]
+
+файл "generalmethods.ts" содержит вспомогательные функции.
 
 Файл "User.ts" содержит следующие классы:
 1. User - пользователи.
@@ -60,3 +66,4 @@ postFavorites (id:number) - добавить книги в список "Изб�
 
 ###### Пример: ######
         User.postFavorites(13)
+
