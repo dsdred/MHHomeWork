@@ -25,7 +25,6 @@ var Genre;
     Genre["novel"] = "Novel";
     Genre["history"] = "History";
 })(Genre || (exports.Genre = Genre = {}));
-;
 var Book = /** @class */ (function () {
     function Book(id, name, author, genre, year, active) {
         this.id = id;
@@ -40,7 +39,8 @@ var Book = /** @class */ (function () {
         this.active = active;
     };
     Book.prototype.librarianSetActive = function (currentUser, active) {
-        if (currentUser.getActive() && currentUser.role.indexOf(users_1.Role.librarian) >= 0) {
+        if (currentUser.getActive() &&
+            currentUser.role.indexOf(users_1.Role.librarian) >= 0) {
             this.active = active;
         }
     };
@@ -50,7 +50,7 @@ var Book = /** @class */ (function () {
     Book.prototype.getActive = function () {
         return this.active;
     };
-    // добавить книги в список "Избранное".
+    // добавить отзыв на книгу.
     Book.prototype.postReview = function (review) {
         this.review.push(review);
     };
@@ -79,11 +79,12 @@ var Catalog = /** @class */ (function () {
         var findBooks = this.books.filter(function (item, index, arr) {
             return item.id === id;
         });
-        var findBook = (findBooks.length > 0) ? findBooks[0] :
-            new Book(this.finalId += 1, "name", "author", [], 1000, false);
-        if (typeof findBook === "undefined") {
-            console.log('Книга отсутствует.');
-            return new Book(this.finalId += 1, "name", "author", [], 1001, false);
+        var findBook = findBooks.length > 0
+            ? findBooks[0]
+            : new Book((this.finalId += 1), "name", "author", [], 1000, false);
+        if (findBook === undefined) {
+            console.log("Книга отсутствует.");
+            return new Book((this.finalId += 1), "name", "author", [], 1001, false);
         }
         else {
             return findBook;
@@ -103,72 +104,76 @@ var Catalog = /** @class */ (function () {
         return findBooks;
     };
     // создаем книгу
-    Catalog.prototype.postBook = function (currentUser, option) {
+    Catalog.prototype.createBook = function (currentUser, option) {
         var arrErr = [];
-        if (typeof option.name == "undefined") {
-            arrErr.push('name'), option.name = "";
+        if (option.name === undefined || option.name.length === 0) {
+            arrErr.push("name"), (option.name = "");
         }
-        if (typeof option.author == "undefined") {
-            arrErr.push('author'), option.author = "";
+        if (option.author === undefined || option.author.length === 0) {
+            arrErr.push("author"), (option.author = "");
         }
-        if (typeof option.year == "undefined") {
-            arrErr.push('year'), option.year = 1000;
+        if (option.year === undefined) {
+            arrErr.push("year"), (option.year = 1000);
         }
-        if (typeof option.active == "undefined") {
+        if (option.active === undefined) {
             option.active = true;
         }
-        if (typeof option.genre == "undefined" || option.genre.length === 0) {
+        if (option.genre === undefined || option.genre.length === 0) {
             option.genre = [];
         }
-        var fullCheck = (arrErr.length === 0) ? true : false;
+        var fullCheck = arrErr.length === 0 ? true : false;
         if (fullCheck) {
-            if (currentUser.getActive() && currentUser.role.indexOf(users_1.Role.librarian) >= 0) {
-                var newBook = new Book(this.finalId += 1, option.name, option.author, option.genre, option.year, option.active);
+            if (currentUser.getActive() &&
+                currentUser.role.indexOf(users_1.Role.librarian) >= 0) {
+                var newBook = new Book((this.finalId += 1), option.name, option.author, option.genre, option.year, option.active);
                 this.books.push(newBook);
             }
             else {
-                console.log('Для добавления книги обратитесь к библиотекарю.');
+                console.log("Для добавления книги обратитесь к библиотекарю.");
             }
         }
         else {
-            console.log('Заполните name, author и year.');
+            console.log("Заполните name, author и year.");
         }
     };
     // ставим пометку, что книга не активена
     Catalog.prototype.deleteBook = function (currentUser, changeBook) {
-        if (currentUser.getActive() && currentUser.role.indexOf(users_1.Role.librarian) >= 0) {
+        if (currentUser.getActive() &&
+            currentUser.role.indexOf(users_1.Role.librarian) >= 0) {
             changeBook.librarianSetActive(currentUser, false);
         }
         else {
-            console.log('Обратитесь к библиотекарю.');
+            console.log("Обратитесь к библиотекарю.");
         }
     };
-    // Редактирование пользователей
-    Catalog.prototype.putBook = function (currentUser, changeBook, option) {
-        if (currentUser.getActive() && currentUser.role.indexOf(users_1.Role.librarian) >= 0) {
+    // Редактирование книги
+    Catalog.prototype.editBook = function (currentUser, changeBook, option) {
+        if (currentUser.getActive() &&
+            currentUser.role.indexOf(users_1.Role.librarian) >= 0) {
             for (var key in option) {
-                if (key != "id") {
-                    if (key === "genre") {
+                switch (key) {
+                    case "id":
+                        break;
+                    case "genre":
                         if (typeof option.genre === "undefined") {
                             option.genre = [];
                         }
                         else {
                             changeBook.genre = __spreadArray([], option.genre, true);
                         }
-                    }
-                    else if (key === "active") {
-                        if (typeof option.active === 'boolean') {
+                        break;
+                    case "active":
+                        if (typeof option.active === "boolean") {
                             changeBook.librarianSetActive(currentUser, option.active);
                         }
-                    }
-                    else {
+                        break;
+                    default:
                         changeBook[key] = option[key];
-                    }
                 }
             }
         }
         else {
-            console.log('Обратитесь к библиотекарю.');
+            console.log("Обратитесь к библиотекарю.");
         }
     };
     return Catalog;

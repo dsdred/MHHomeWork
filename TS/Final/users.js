@@ -17,12 +17,11 @@ var Role;
     Role["reader"] = "Reader";
     Role["librarian"] = "Librarian";
 })(Role || (exports.Role = Role = {}));
-;
 var User = /** @class */ (function () {
     function User(id, name, email, role, active) {
         this.name = name;
         this.email = email;
-        if (typeof role === "undefined") {
+        if (role === undefined) {
             this.role = [Role.reader];
         }
         else {
@@ -78,7 +77,7 @@ var Library = /** @class */ (function () {
     // создаем главного пользователя
     Library.prototype.createGod = function () {
         if (this.users.length === 0) {
-            var newuser = new User(this.finalId += 1, 'god', 'heaven@library.ru', [Role.admin], true);
+            var newuser = new User((this.finalId += 1), "god", "heaven@library.ru", [Role.admin, Role.librarian], true);
             this.users.push(newuser);
             return newuser;
         }
@@ -103,20 +102,21 @@ var Library = /** @class */ (function () {
                 // console.log(item, index, arr);
                 return item.id == id;
             });
-            var findUser = (findUsers.length > 0) ? findUsers[0] :
-                new User(this.finalId += 1, "name", "email", [Role.reader], false);
-            if (typeof findUser === "undefined") {
-                console.log('Пользователь отсутствует.');
-                return new User(this.finalId += 1, "name", "email", [Role.reader], false);
+            var findUser = findUsers.length > 0
+                ? findUsers[0]
+                : new User((this.finalId += 1), "name", "email", [Role.reader], false);
+            if (findUser === undefined) {
+                console.log("Пользователь отсутствует.");
+                return new User((this.finalId += 1), "name", "email", [Role.reader], false);
             }
             else {
                 return findUser;
             }
         }
         else {
-            console.log('Обратитесь к администратору.');
+            console.log("Обратитесь к администратору.");
         }
-        return new User(this.finalId += 1, "name", "email", [Role.reader], false);
+        return new User((this.finalId += 1), "name", "email", [Role.reader], false);
     };
     // получить список пользователей на основании фильтра.
     Library.prototype.getUsers = function (currentUser, option) {
@@ -133,37 +133,38 @@ var Library = /** @class */ (function () {
             return findUsers;
         }
         else {
-            console.log('Для получения списка пользователей обратитесь к администратору.');
+            console.log("Для получения списка пользователей обратитесь к администратору.");
         }
         return currentUser;
     };
     // создаем пользователя
-    Library.prototype.postUser = function (currentUser, option) {
+    Library.prototype.сreatUser = function (currentUser, option) {
         var arrErr = [];
-        if (typeof option.name == "undefined") {
-            arrErr.push('name'), option.name = "";
+        if (option.name === undefined || option.name.length === 0) {
+            arrErr.push("name"), (option.name = "");
         }
-        if (typeof option.email == "undefined") {
-            arrErr.push('email'), option.email = "";
+        if (option.email === undefined || option.email.length === 0) {
+            arrErr.push("email"), (option.email = "");
         }
-        if (typeof option.role == "undefined" || option.role.length === 0) {
+        if (option.role === undefined || option.role.length === 0) {
             option.role = [Role.reader];
         }
-        if (typeof option.active == "undefined") {
+        if (option.active === undefined) {
             option.active = true;
         }
-        var fullCheck = (arrErr.length === 0) ? true : false;
+        var fullCheck = arrErr.length === 0 ? true : false;
         if (fullCheck) {
-            if (currentUser.getActive() && currentUser.role.indexOf(Role.admin) >= 0) {
-                var newuser = new User(this.finalId += 1, option.name, option.email, option.role, option.active);
+            if (currentUser.getActive() &&
+                currentUser.role.indexOf(Role.admin) >= 0) {
+                var newuser = new User((this.finalId += 1), option.name, option.email, option.role, option.active);
                 this.users.push(newuser);
             }
             else {
-                console.log('Для создания пользователя обратитесь к администратору.');
+                console.log("Для создания пользователя обратитесь к администратору.");
             }
         }
         else {
-            console.log('Заполните name и email.');
+            console.log("Заполните name и email.");
         }
     };
     // ставим пометку, что пользователь не активен
@@ -172,16 +173,18 @@ var Library = /** @class */ (function () {
             changeUser.adminSetActive(currentUser, false);
         }
         else {
-            console.log('Обратитесь к администратору.');
+            console.log("Обратитесь к администратору.");
         }
     };
     // Редактирование пользователей
-    Library.prototype.putUser = function (currentUser, changeUser, option) {
+    Library.prototype.editUser = function (currentUser, changeUser, option) {
         if (currentUser.getActive() && currentUser.role.indexOf(Role.admin) >= 0) {
             for (var key in option) {
-                if (key != "id") {
-                    if (key === "role") {
-                        if (typeof option.role === "undefined") {
+                switch (key) {
+                    case "id":
+                        break;
+                    case "role":
+                        if (option.role === undefined) {
                             option.role = [Role.reader];
                         }
                         else {
@@ -190,20 +193,19 @@ var Library = /** @class */ (function () {
                                 changeUser.role.push(Role.reader);
                             }
                         }
-                    }
-                    else if (key === "active") {
-                        if (typeof option.active === 'boolean') {
+                        break;
+                    case "active":
+                        if (typeof option.active === "boolean") {
                             changeUser.adminSetActive(currentUser, option.active);
                         }
-                    }
-                    else {
+                        break;
+                    default:
                         changeUser[key] = option[key];
-                    }
                 }
             }
         }
         else {
-            console.log('Обратитесь к администратору.');
+            console.log("Обратитесь к администратору.");
         }
     };
     return Library;
