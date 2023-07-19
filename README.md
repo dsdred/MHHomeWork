@@ -103,25 +103,25 @@
         options.active      = false;
         console.log(myLibrary.getUsers(godUser, options));
 
-#### postUser(currentUser: User, option: UserFilter) - создаем пользователя. ####
+#### createUser(currentUser: User, option: UserFilter) - создаем пользователя. ####
 ###### Пример: создание администратора ######
         let options         = new UserFilter()
         options.name        = 'Иван';
         options.email       = '911@library.ru';
         options.role        = [Role.admin];
         options.active      = true;
-        myLibrary.postUser(godUser, options) 
+        myLibrary.createUser(godUser, options) 
 
 #### deleteUser(currentUser: User, changeUser:User) - удаление пользователя. Ставим пометку, что пользователь не активен. ####
 ###### Пример: удаляем пользователя ######
         myLibrary.deleteUser(godUser, User)
 
-#### putUser(currentUser: User, changeUser:User, option: UserFilter) - редактируем пользователя. ####
+#### editUser(currentUser: User, changeUser:User, option: UserFilter) - редактируем пользователя. ####
 ###### Пример: активируем пользователя и даем права администратора ######
         let options     = new UserFilter()
         options.role    = [Role.admin];
         options.active  = true;
-        myLibrary.putUser(godUser, User, options)
+        myLibrary.editUser(godUser, User, options)
 
 ### Файл "catalog.ts" содержит следующие классы: ###
 1. Book - книга.
@@ -187,7 +187,7 @@
         optionbook.year    = 2007
         console.log(myCatalog.getBooks(optionbook));
 
-#### postBook(currentUser: User, option:BookFilter) - создаем книгу ####
+#### createBook(currentUser: User, option:BookFilter) - создаем книгу ####
 ###### Пример: ######
         let newBook     = new BookFilter
         newBook.name    = "Цель"
@@ -195,17 +195,17 @@
         newBook.genre   = [Genre.business, Genre.theory]
         newBook.year    = 2014
         newBook.active  = true;
-        myCatalog.postBook(godUser, newBook)
+        myCatalog.createBook(godUser, newBook)
 
 #### deleteBook(currentUser: User, changeBook:Book) - ставим пометку, что книга не активена/удалена ####
 ###### Пример: ######
         const myCatalog = new Catalog()
         myCatalog.deleteBook(User, Book) 
 
-#### putBook(currentUser: User, changeBook:Book, option: BookFilter) - редактируем книгу ####
+#### editBook(currentUser: User, changeBook:Book, option: BookFilter) - редактируем книгу ####
 ###### Пример: изменяем автора, жанр и дату издания ######
         let optionbook     = new BookFilter
         optionbook1.author  = "Элияху Голдратт"
         optionbook1.genre   = [Genre.business]
         optionbook1.year    = 2014
-        myCatalog.putBook(godUser, Book, optionbook)
+        myCatalog.editBook(godUser, Book, optionbook)
